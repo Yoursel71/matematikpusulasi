@@ -71,6 +71,8 @@ a { color: var(--teal); }
     height: 297mm;
     margin: 22px auto;
     background: var(--paper);
+    /* Metin rengi sayfanın kendisinde sabit: çevredeki tema (ör. koyu mod) kâğıttaki yazıya geçmez. */
+    color: var(--ink);
     position: relative;
     overflow: hidden;
     padding: 14mm 16mm 20mm;
@@ -332,6 +334,7 @@ sup { font-size: 0.7em; vertical-align: 0.4em; line-height: 0; }
 table.data {
     width: 100%;
     border-collapse: collapse;
+    color: var(--ink);
     font-size: 8.4pt;
     margin: 3mm 0;
 }
@@ -605,6 +608,30 @@ table.data td.num {
     letter-spacing: 1.5px;
     text-transform: uppercase;
     color: rgba(251, 248, 241, 0.8);
+}
+
+.cover-qr {
+    display: flex;
+    align-items: center;
+    gap: 4mm;
+}
+
+.cover-qr img {
+    width: 24mm;
+    height: 24mm;
+    background: #fff;
+    padding: 1.2mm;
+    border-radius: 3px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Adres büyük harfe çevrilmez: Türkçede "i" → "İ" olur ve adres bozulur. */
+.cover-qr .url {
+    text-transform: none;
+    letter-spacing: 0.5px;
+    font-size: 9pt;
+    font-weight: 800;
+    color: var(--sun);
 }
 
 .cover-foot .big {
