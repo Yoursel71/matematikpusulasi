@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" font-family="Arial, Helvetica, sans-serif">
+  <line x1="300" y1="20" x2="300" y2="285" stroke="#d9e3e6" stroke-width="2"/>
+  <line x1="600" y1="20" x2="600" y2="285" stroke="#d9e3e6" stroke-width="2"/>
+
+  <!-- Metan (CH4): dolu bağlar önde, kesikli bağlar arkada -->
+  <g stroke="#0b2433" stroke-width="6" fill="none">
+    <line x1="150" y1="130" x2="92" y2="72"/>
+    <line x1="150" y1="130" x2="208" y2="188"/>
+  </g>
+  <g stroke="#5b6b73" stroke-width="3" stroke-dasharray="6 4" fill="none">
+    <line x1="150" y1="130" x2="208" y2="72"/>
+    <line x1="150" y1="130" x2="92" y2="188"/>
+  </g>
+  <circle cx="150" cy="130" r="24" fill="#222222"/>
+  <text x="150" y="137" text-anchor="middle" font-size="18" font-weight="bold" fill="#ffffff">C</text>
+  <g fill="#ffffff" stroke="#0b2433" stroke-width="1.5">
+    <circle cx="92" cy="72" r="18"/>
+    <circle cx="208" cy="72" r="18"/>
+    <circle cx="92" cy="188" r="18"/>
+    <circle cx="208" cy="188" r="18"/>
+  </g>
+  <g font-size="14" font-weight="bold" fill="#0b2433" text-anchor="middle">
+    <text x="92" y="78">H</text>
+    <text x="208" y="78">H</text>
+    <text x="92" y="194">H</text>
+    <text x="208" y="194">H</text>
+  </g>
+
+  <!-- Su (H2O): açı yayı 104,5° -->
+  <g stroke="#0b2433" stroke-width="6">
+    <line x1="450" y1="130" x2="379" y2="75"/>
+    <line x1="450" y1="130" x2="521" y2="75"/>
+  </g>
+  <path d="M418.4 105.5 A40 40 0 0 1 481.6 105.5" fill="none" stroke="#0e7c7b" stroke-width="2"/>
+  <circle cx="450" cy="130" r="24" fill="#e4572e"/>
+  <text x="450" y="137" text-anchor="middle" font-size="18" font-weight="bold" fill="#ffffff">O</text>
+  <g fill="#ffffff" stroke="#0b2433" stroke-width="1.5">
+    <circle cx="379" cy="75" r="18"/>
+    <circle cx="521" cy="75" r="18"/>
+  </g>
+  <g font-size="14" font-weight="bold" fill="#0b2433" text-anchor="middle">
+    <text x="379" y="81">H</text>
+    <text x="521" y="81">H</text>
+  </g>
+
+  <!-- Karbondioksit (CO2): doğrusal, çift bağlar -->
+  <g stroke="#0b2433" stroke-width="5">
+    <line x1="660" y1="124" x2="750" y2="124"/>
+    <line x1="660" y1="136" x2="750" y2="136"/>
+    <line x1="750" y1="124" x2="840" y2="124"/>
+    <line x1="750" y1="136" x2="840" y2="136"/>
+  </g>
+  <circle cx="660" cy="130" r="22" fill="#e4572e"/>
+  <circle cx="750" cy="130" r="20" fill="#222222"/>
+  <circle cx="840" cy="130" r="22" fill="#e4572e"/>
+  <g font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">
+    <text x="660" y="136">O</text>
+    <text x="750" y="136">C</text>
+    <text x="840" y="136">O</text>
+  </g>
+
+  <g font-size="15" font-weight="bold" fill="#0b2433" text-anchor="middle">
+    <text x="150" y="252">Metan (CH<tspan baseline-shift="sub" font-size="10">4</tspan>)</text>
+    <text x="450" y="252">Su (H<tspan baseline-shift="sub" font-size="10">2</tspan>O)</text>
+    <text x="750" y="252">Karbondioksit (CO<tspan baseline-shift="sub" font-size="10">2</tspan>)</text>
+  </g>
+  <g font-size="13" fill="#5b6b73" text-anchor="middle">
+    <text x="150" y="272">Dörtyüzlü · 109,5°</text>
+    <text x="450" y="272">Açısal · 104,5°</text>
+    <text x="750" y="272">Doğrusal · 180°</text>
+  </g>
+</svg>

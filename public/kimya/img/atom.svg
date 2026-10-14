@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" font-family="Arial, Helvetica, sans-serif">
+  <text x="20" y="30" font-size="15" font-weight="bold" fill="#fbf8f1">Karbon (C) atomu — Bohr modeli</text>
+  <circle cx="220" cy="200" r="60" fill="none" stroke="#7fd8cc" stroke-width="2" stroke-dasharray="6 5"/>
+  <circle cx="220" cy="200" r="120" fill="none" stroke="#7fd8cc" stroke-width="2" stroke-dasharray="6 5"/>
+  <circle cx="220" cy="200" r="34" fill="#ffc857"/>
+  <text x="220" y="196" text-anchor="middle" font-size="12" font-weight="bold" fill="#0b2433">6p+</text>
+  <text x="220" y="212" text-anchor="middle" font-size="12" font-weight="bold" fill="#0b2433">6n</text>
+  <g fill="#e4572e">
+    <circle cx="280" cy="200" r="9"/>
+    <circle cx="160" cy="200" r="9"/>
+  </g>
+  <g fill="#2ec4b6">
+    <circle cx="305" cy="285" r="9"/>
+    <circle cx="135" cy="285" r="9"/>
+    <circle cx="135" cy="115" r="9"/>
+    <circle cx="305" cy="115" r="9"/>
+  </g>
+  <g stroke="#7fd8cc" stroke-width="1.2">
+    <line x1="252" y1="188" x2="424" y2="120"/>
+    <line x1="289" y1="200" x2="424" y2="200"/>
+    <line x1="314" y1="289" x2="424" y2="300"/>
+  </g>
+  <text x="432" y="116" font-size="14" font-weight="bold" fill="#fbf8f1">Çekirdek</text>
+  <text x="432" y="133" font-size="11" fill="#c9d6da">6 proton + 6 nötron</text>
+  <text x="432" y="196" font-size="14" font-weight="bold" fill="#fbf8f1">K kabuğu</text>
+  <text x="432" y="213" font-size="11" fill="#c9d6da">2 elektron</text>
+  <text x="432" y="296" font-size="14" font-weight="bold" fill="#fbf8f1">L kabuğu</text>
+  <text x="432" y="313" font-size="11" fill="#c9d6da">4 elektron (değerlik elektronu)</text>
+  <text x="20" y="380" font-size="11" fill="#c9d6da">Atom numarası 6: nötr atomda 6 proton ve 6 elektron vardır.</text>
+</svg>

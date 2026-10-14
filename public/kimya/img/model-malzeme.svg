@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" font-family="Arial, Helvetica, sans-serif">
+  <!-- Atom renkleri (sol) -->
+  <g stroke="#fbf8f1" stroke-width="1.5">
+    <circle cx="60" cy="55" r="26" fill="#222222"/>
+    <circle cx="60" cy="115" r="18" fill="#ffffff"/>
+    <circle cx="60" cy="175" r="24" fill="#e4572e"/>
+    <circle cx="60" cy="235" r="22" fill="#2f6bff"/>
+  </g>
+  <g font-size="15" font-weight="bold" fill="#fbf8f1">
+    <text x="60" y="61" text-anchor="middle" fill="#ffffff">C</text>
+    <text x="60" y="121" text-anchor="middle" fill="#0b2433">H</text>
+    <text x="60" y="181" text-anchor="middle" fill="#ffffff">O</text>
+    <text x="60" y="241" text-anchor="middle" fill="#ffffff">N</text>
+  </g>
+  <g font-size="14" fill="#fbf8f1">
+    <text x="100" y="52" font-weight="bold">Karbon (C): siyah top</text>
+    <text x="100" y="68" font-size="12" fill="#c9d6da">4 bağ yapar</text>
+    <text x="100" y="112" font-weight="bold">Hidrojen (H): beyaz top</text>
+    <text x="100" y="128" font-size="12" fill="#c9d6da">1 bağ yapar</text>
+    <text x="100" y="172" font-weight="bold">Oksijen (O): kırmızı top</text>
+    <text x="100" y="188" font-size="12" fill="#c9d6da">2 bağ yapar</text>
+    <text x="100" y="232" font-weight="bold">Azot (N): mavi top</text>
+    <text x="100" y="248" font-size="12" fill="#c9d6da">3 bağ yapar</text>
+  </g>
+
+  <!-- Bağ çubukları (sağ) -->
+  <g stroke="#7fd8cc" stroke-width="6" stroke-linecap="round">
+    <line x1="350" y1="60" x2="470" y2="60"/>
+    <line x1="350" y1="130" x2="470" y2="130"/>
+    <line x1="350" y1="142" x2="470" y2="142"/>
+    <line x1="350" y1="200" x2="470" y2="200"/>
+    <line x1="350" y1="212" x2="470" y2="212"/>
+    <line x1="350" y1="224" x2="470" y2="224"/>
+  </g>
+  <g font-size="14" font-weight="bold" fill="#fbf8f1">
+    <text x="490" y="66">Tek bağ: 1 çubuk</text>
+    <text x="490" y="142">Çift bağ: 2 çubuk</text>
+    <text x="490" y="218">Üçlü bağ: 3 çubuk</text>
+  </g>
+
+  <text x="320" y="286" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffc857">Model akışı: reaktifleri kur → bağları kır → ürünleri kur → bağları yeniden kur</text>
+</svg>

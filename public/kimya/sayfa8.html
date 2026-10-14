@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOLEKÜL — Sayfa 8: Kütle Korunumu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="kimya.css">
+</head>
+<body>
+    <nav class="screen-nav">
+        <a href="sayfa7.html">← Önceki</a>
+        <a href="dergi.html">Dergi</a>
+        <a href="sayfa9.html">Sonraki →</a>
+    </nav>
+
+    <main class="page">
+        <header class="page-head"><span>MOLEKÜL · Sayı 01</span><span>Kütle korunumu ve denkleştirme</span></header>
+
+        <div class="page-body">
+            <p class="kicker">Bölüm 6 · Hesaplama</p>
+            <h1 class="title">Kütle korunur, denklem dengelenir</h1>
+
+            <figure class="fig card float-l">
+                <img src="img/kutle.svg" alt="Metan yanmasında reaktif ve ürün kütlelerinin sütun grafiği">
+                <figcaption>Şekil 6. Metanın yanmasında reaktif ve ürün kütleleri (gram). Mol kütleleri: CH<sub>4</sub> 16,04; O<sub>2</sub> 32,00; CO<sub>2</sub> 44,01; H<sub>2</sub>O 18,015.</figcaption>
+            </figure>
+
+            <p>Antoine Lavoisier, kapalı bir sistemde tepkimeye giren maddelerin toplam kütlesinin, oluşan ürünlerin toplam kütlesine eşit olduğunu göstermiştir. Buna <strong>kütlenin korunumu</strong> denir.</p>
+
+            <p><strong>Metanın yanmasında:</strong> 16,04 g CH<sub>4</sub> + 2 × 32,00 g O<sub>2</sub> = <strong>80,04 g</strong>. Ürünler: 44,01 g CO<sub>2</sub> + 2 × 18,015 g H<sub>2</sub>O = <strong>80,04 g</strong>. İki taraf da eşittir.</p>
+
+            <h2>Atom sayılarını kontrol edin</h2>
+            <table class="data">
+                <thead>
+                    <tr><th>Atom</th><th>Reaktiflerde</th><th>Ürünlerde</th><th>Durum</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>C</td><td class="num">1</td><td class="num">1</td><td>Eşit</td></tr>
+                    <tr><td>H</td><td class="num">4</td><td class="num">4 (2 × 2)</td><td>Eşit</td></tr>
+                    <tr><td>O</td><td class="num">4 (2 × 2)</td><td class="num">4 (2 + 2 × 1)</td><td>Eşit</td></tr>
+                </tbody>
+            </table>
+
+            <h2>Denklem nasıl dengelenir?</h2>
+            <p>Örnek olarak <em>CH<sub>4</sub> + O<sub>2</sub> → CO<sub>2</sub> + H<sub>2</sub>O</em> denklemini ele alalım. Bu denklem dengesizdir. Şu adımlarla dengeleyebilirsiniz:</p>
+            <ol class="steps">
+                <li>Her iki taraftaki atom sayılarını yazın.</li>
+                <li>Önce C ve H'yi dengeleyin. Tek atomlu olanları sona bırakın.</li>
+                <li>Oksijeni en son dengeleyin: 2 O<sub>2</sub> ve 2 H<sub>2</sub>O.</li>
+                <li>Sonuç: <strong>CH<sub>4</sub> + 2O<sub>2</sub> → CO<sub>2</sub> + 2H<sub>2</sub>O</strong>. Atom sayılarını tekrar kontrol edin.</li>
+            </ol>
+
+            <div class="callout coral">
+                <strong>Dikkat:</strong> Katsayı, tepkimeye giren ya da çıkan molekül sayısıdır. Formüldeki alt indisi değiştirmek molekülün kendisini değiştirir; bu yüzden denkleştirirken yalnızca katsayılara dokunulur.
+            </div>
+
+            <div class="callout">
+                <strong>Örnek hesap:</strong> 8 g CH<sub>4</sub> yandığında kaç g CO<sub>2</sub> oluşur?<br>
+                n(CH<sub>4</sub>) = 8 ÷ 16,04 ≈ 0,499 mol → denkleme göre n(CO<sub>2</sub>) = 0,499 mol → m(CO<sub>2</sub>) = 0,499 × 44,01 ≈ <strong>21,95 g</strong><br>
+                Kontrol: 8 + 31,92 (O<sub>2</sub>) = 39,92 g; 21,95 + 17,97 (H<sub>2</sub>O) = 39,92 g ✓
+            </div>
+
+            <div class="callout teal">
+                <strong>Kendin dene:</strong> Propan yanmasını dengeleyin: C<sub>3</sub>H<sub>8</sub> + O<sub>2</sub> → CO<sub>2</sub> + H<sub>2</sub>O
+                <br>Cevap: C<sub>3</sub>H<sub>8</sub> + 5O<sub>2</sub> → 3CO<sub>2</sub> + 4H<sub>2</sub>O
+            </div>
+        </div>
+
+        <footer class="page-foot"><span>10. Sınıf Kimya</span><span class="num">08</span></footer>
+    </main>
+</body>
+</html>

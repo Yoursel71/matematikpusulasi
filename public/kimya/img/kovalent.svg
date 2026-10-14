@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 260" font-family="Arial, Helvetica, sans-serif">
+  <circle cx="190" cy="130" r="62" fill="rgba(14,124,123,0.18)" stroke="#0e7c7b" stroke-width="2"/>
+  <circle cx="270" cy="130" r="62" fill="rgba(228,87,46,0.18)" stroke="#e4572e" stroke-width="2"/>
+  <circle cx="190" cy="130" r="6" fill="#0b2433"/>
+  <circle cx="270" cy="130" r="6" fill="#0b2433"/>
+  <circle cx="230" cy="112" r="7" fill="#0b2433"/>
+  <circle cx="230" cy="148" r="7" fill="#0b2433"/>
+  <text x="190" y="210" text-anchor="middle" font-size="13" font-weight="bold" fill="#0e7c7b">H</text>
+  <text x="270" y="210" text-anchor="middle" font-size="13" font-weight="bold" fill="#e4572e">H</text>
+  <text x="400" y="62" font-size="15" font-weight="bold" fill="#0b2433">Tek kovalent bağ (H–H)</text>
+  <text x="400" y="110" font-size="20" font-weight="bold" fill="#0b2433">H· + ·H  →  H:H</text>
+  <text x="400" y="140" font-size="11" fill="#5b6b73">Her H atomu 1 elektronunu paylaşır;</text>
+  <text x="400" y="156" font-size="11" fill="#5b6b73">iki atom da 2 elektronlu (He) düzene</text>
+  <text x="400" y="172" font-size="11" fill="#5b6b73">yaklaşır.</text>
+  <text x="400" y="206" font-size="12" font-weight="bold" fill="#e4572e">Ortak elektron çifti = 1 bağ</text>
+</svg>
