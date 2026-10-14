@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MOLEKÜL — 10. Sınıf Kimya</title>
-    <meta name="description" content="Moleküller ve kimyasal tepkimeler için kısa dergi, 1. performans ödevi rehberi ve mini quiz.">
+    <meta name="description" content="Moleküller ve kimyasal tepkimeler için 3D molekül laboratuvarı, tepkime animasyonu, kısa dergi ve 1. performans ödevi rehberi.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
     <link rel="stylesheet" href="kimya.css">
 </head>
 <body>
@@ -15,6 +16,8 @@
         <a class="brand" href="index.html">MOLE<span>KÜL</span></a>
         <nav class="site-nav">
             <a href="#molekul">Molekül nedir?</a>
+            <a href="#lab">3D Lab</a>
+            <a href="#tepkime">Tepkime</a>
             <a href="#odev">Ödev</a>
             <a href="#quiz">Mini quiz</a>
             <a href="dergi.html">Dergi</a>
@@ -23,12 +26,14 @@
 
     <section class="hero">
         <img src="img/kapak.svg" alt="">
+        <div class="hero-3d" id="hero-3d" aria-hidden="true"></div>
         <div class="hero-inner">
             <p class="kicker">10. Sınıf Kimya · Sayı 01 · Ekim 2026</p>
             <h1>MOLEKÜL</h1>
-            <p class="lead">Atomlar bir araya gelince ne olur? Bağları, şekilleri ve tepkimeleri kısa bir dergi ve rehberle öğrenin.</p>
+            <p class="lead">Atomlar bir araya gelince ne olur? Molekülleri 3D olarak çevirin, bir tepkimeyi adım adım izleyin, sonra dergiyle konuyu pekiştirin.</p>
             <div class="btn-row">
-                <a class="btn primary" href="dergi.html">Dergiyi oku</a>
+                <a class="btn primary" href="#lab">3D laboratuvara gir</a>
+                <a class="btn ghost" href="dergi.html">Dergiyi oku</a>
                 <a class="btn ghost" href="sayfa10.html">Performans ödevi</a>
             </div>
         </div>
@@ -38,21 +43,121 @@
         <h2 class="section-title">Molekül nedir?</h2>
         <p class="lead">Atomlar kimyasal bağlarla birleşince molekül oluşur. Dört temel kavram, dergideki her konunun temelini oluşturur.</p>
         <div class="site-cards">
-            <div class="site-card">
+            <div class="site-card" data-tilt>
                 <h3>Atom</h3>
                 <p>Bir elementin en küçük birimi. Çekirdek (proton ve nötron) ile etrafındaki elektronlardan oluşur.</p>
             </div>
-            <div class="site-card coral">
+            <div class="site-card coral" data-tilt>
                 <h3>Kovalent bağ</h3>
                 <p>Atomların elektron çiftlerini ortaklaşa kullanmasıyla oluşur. Örnek: H–H, C–H, O=O.</p>
             </div>
-            <div class="site-card mint">
+            <div class="site-card mint" data-tilt>
                 <h3>Molekül</h3>
                 <p>En az iki atomun bağlanmasıyla oluşan tanecik. Örnek: su (H<sub>2</sub>O), metan (CH<sub>4</sub>), karbondioksit (CO<sub>2</sub>).</p>
             </div>
-            <div class="site-card sun">
+            <div class="site-card sun" data-tilt>
                 <h3>Tepkime</h3>
                 <p>Bağların kırılıp yeni bağların kurulmasıyla gerçekleşen değişim. Kütle her zaman korunur.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="block alt" id="lab">
+        <p class="kicker">Etkileşimli</p>
+        <h2 class="section-title">3D molekül laboratuvarı</h2>
+        <p class="lead">Bir molekül seçin ve sürükleyerek çevirin. Top-çubuk ile dolgu modelini karşılaştırın; ortaklanmamış elektron çiftlerinin şekli nasıl değiştirdiğine bakın.</p>
+
+        <div class="lab">
+            <div class="stage">
+                <div class="stage-canvas" id="lab-3d" tabindex="0" role="img" aria-label="Seçili molekülün döndürülebilir 3 boyutlu modeli"></div>
+                <p class="stage-hint">Sürükleyerek döndürün · ok tuşları da çalışır</p>
+                <p class="webgl-fallback">Tarayıcınız WebGL desteklemediği için 3D model gösterilemiyor. Molekül şekilleri için dergi sayfa 5'e bakabilirsiniz.</p>
+            </div>
+
+            <div class="lab-panel">
+                <div class="mol-picker" role="group" aria-label="Molekül seçimi">
+                    <button type="button" data-mol="h2o" aria-pressed="true">H<sub>2</sub>O</button>
+                    <button type="button" data-mol="ch4" aria-pressed="false">CH<sub>4</sub></button>
+                    <button type="button" data-mol="co2" aria-pressed="false">CO<sub>2</sub></button>
+                    <button type="button" data-mol="nh3" aria-pressed="false">NH<sub>3</sub></button>
+                    <button type="button" data-mol="o2" aria-pressed="false">O<sub>2</sub></button>
+                    <button type="button" data-mol="n2" aria-pressed="false">N<sub>2</sub></button>
+                    <button type="button" data-mol="h2" aria-pressed="false">H<sub>2</sub></button>
+                </div>
+
+                <div class="lab-toggles">
+                    <div class="seg" role="group" aria-label="Model türü">
+                        <button type="button" data-mode="ball" aria-pressed="true">Top-çubuk</button>
+                        <button type="button" data-mode="space" aria-pressed="false">Dolgu</button>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="lab-labels" checked> Atom etiketleri</label>
+                    <label class="switch"><input type="checkbox" id="lab-lone" checked> Ortaklanmamış çiftler</label>
+                    <label class="switch"><input type="checkbox" id="lab-spin" checked> Otomatik dönüş</label>
+                </div>
+
+                <div class="mol-info" aria-live="polite">
+                    <h3 id="mol-name">Su</h3>
+                    <p class="mol-formula" id="mol-formula">H<sub>2</sub>O</p>
+                    <dl>
+                        <div><dt>Şekil</dt><dd id="mol-shape">Açısal (bükük)</dd></div>
+                        <div><dt>Bağ açısı</dt><dd id="mol-angle">104,5°</dd></div>
+                        <div><dt>Polarlık</dt><dd id="mol-polar" data-kind="polar">Polar</dd></div>
+                        <div class="wide"><dt>Bağlar</dt><dd id="mol-bonds">2 tek bağ (O–H); oksijende 2 ortaklanmamış elektron çifti</dd></div>
+                    </dl>
+                    <p id="mol-note">Kutuplu olduğu için tuz ve şeker gibi maddeleri iyi çözer.</p>
+                    <a id="mol-page" href="sayfa6.html">Dergide oku: sayfa 6 →</a>
+                </div>
+
+                <ul class="legend" aria-label="Atom renkleri">
+                    <li><span class="dot c"></span>C karbon</li>
+                    <li><span class="dot h"></span>H hidrojen</li>
+                    <li><span class="dot o"></span>O oksijen</li>
+                    <li><span class="dot n"></span>N azot</li>
+                    <li><span class="dot lp"></span>ortaklanmamış çift</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="block" id="tepkime">
+        <p class="kicker">Performans ödevinin konusu</p>
+        <h2 class="section-title">3D tepkime: metanın yanması</h2>
+        <p class="lead">CH<sub>4</sub> + 2O<sub>2</sub> → CO<sub>2</sub> + 2H<sub>2</sub>O. Bağların kırılmasını, atomların yer değiştirmesini ve yeni bağların kurulmasını izleyin. Sahnedeki atom sayısı hiç değişmez.</p>
+
+        <div class="lab">
+            <div class="stage">
+                <div class="stage-canvas" id="reaction-3d" tabindex="0" role="img" aria-label="Metanın yanma tepkimesinin 3 boyutlu animasyonu"></div>
+                <div class="stage-caption" id="reaction-caption">Reaktifler: 1 CH<sub>4</sub> + 2 O<sub>2</sub></div>
+                <p class="stage-hint">Sürükleyerek açıyı değiştirin</p>
+                <p class="webgl-fallback">Tarayıcınız WebGL desteklemediği için animasyon gösterilemiyor. Aynı tepkime dergi sayfa 7'de adım adım anlatılıyor.</p>
+            </div>
+
+            <div class="lab-panel">
+                <ol class="reaction-steps">
+                    <li class="active">Reaktifler hazır: 1 CH<sub>4</sub> ve 2 O<sub>2</sub></li>
+                    <li>Bağlar kırılır: 4 C–H ve 2 O=O (enerji gerekir)</li>
+                    <li>Atomlar yeniden düzenlenir</li>
+                    <li>Yeni bağlar kurulur: 2 C=O ve 4 O–H (enerji açığa çıkar)</li>
+                    <li>Ürünler: 1 CO<sub>2</sub> ve 2 H<sub>2</sub>O</li>
+                </ol>
+
+                <div class="reaction-controls">
+                    <button type="button" class="primary" id="reaction-play">Oynat</button>
+                    <button type="button" id="reaction-reset">Başa sar</button>
+                    <input type="range" id="reaction-progress" min="0" max="1000" value="0" aria-label="Tepkimenin ilerlemesi">
+                </div>
+
+                <table class="atom-count">
+                    <thead>
+                        <tr><th>Atom</th><th>Reaktifler</th><th>Ürünler</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>C</td><td>1</td><td>1</td></tr>
+                        <tr><td>H</td><td>4</td><td>4</td></tr>
+                        <tr><td>O</td><td>4</td><td>4</td></tr>
+                    </tbody>
+                </table>
+                <p class="reaction-note">Atomlar yok olmaz, yalnızca yeniden düzenlenir; bu yüzden kütle korunur. Net enerji yaklaşık −802 kJ (ekzotermik). Hesap için dergi sayfa 7 ve 8'e bakın.</p>
             </div>
         </div>
     </section>
@@ -62,7 +167,7 @@
             <div>
                 <h2 class="section-title">1. performans ödevi</h2>
                 <p class="lead">Kimyasal Tepkime Modellemesi</p>
-                <p>Ekip halinde günlük hayattan bir kimyasal tepkime seçin, moleküllerin bağlarını somut malzemelerle modelleyin ve sınıfa sunun. Ayrıntılar ders kitabının ilgili sayfasında ve öğretmeninizin yönergesindedir.</p>
+                <p>Ekip halinde günlük hayattan bir kimyasal tepkime seçin, moleküllerin bağlarını somut malzemelerle modelleyin ve sınıfa sunun. Yukarıdaki 3D animasyon, modelinizde göstermeniz gereken aşamaların bir örneğidir. Ayrıntılar ders kitabının ilgili sayfasında ve öğretmeninizin yönergesindedir.</p>
                 <ol class="steps-web">
                     <li>Tepkimeyi seçin ve denklemi denkleştirin.</li>
                     <li>Atomları ve bağları modelleyin.</li>
@@ -77,7 +182,7 @@
         </div>
     </section>
 
-    <section class="block alt" id="sss">
+    <section class="block" id="sss">
         <h2 class="section-title">Ödev hakkında sık sorulanlar</h2>
         <p class="lead">Öğrencilerin en çok sorduğu dört soru ve kısa yanıtları.</p>
         <div class="faq">
@@ -100,7 +205,7 @@
         </div>
     </section>
 
-    <section class="block" id="sozluk">
+    <section class="block alt" id="sozluk">
         <h2 class="section-title">Kavram sözlüğü</h2>
         <p class="lead">Dergide geçen temel terimler, kısa tanımlarla.</p>
         <dl class="glossary">
@@ -152,6 +257,7 @@
     <footer class="site-footer">
         <p>MOLEKÜL · 10. Sınıf Kimya · Eğitim amaçlı hazırlanmıştır.</p>
         <p>Kaynaklar: MEB 10. Sınıf Kimya Ders Kitabı (s. 33, ikincil özetler üzerinden) ve genel kimya referansları. Ayrıntılar dergi sayfa 10'da.</p>
+        <p>3D modeller <a href="vendor/three-LICENSE.txt">three.js</a> (MIT lisansı) ile çizilmiştir.</p>
     </footer>
 
     <script>
@@ -188,5 +294,7 @@
             });
         })();
     </script>
+    <script src="js/tilt.js" defer></script>
+    <script type="module" src="js/site3d.js"></script>
 </body>
 </html>

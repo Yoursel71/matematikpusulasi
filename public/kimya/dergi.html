@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
     <link rel="stylesheet" href="kimya.css">
 </head>
 <body>
@@ -15,6 +16,7 @@
         <a class="brand" href="index.html">MOLE<span>KÜL</span></a>
         <nav class="site-nav">
             <a href="index.html">Ana sayfa</a>
+            <a href="index.html#lab">3D Lab</a>
             <a href="sayfa10.html">Ödev</a>
             <a href="dergi.html">Dergi</a>
         </nav>
@@ -26,43 +28,43 @@
         <p class="lead">On sayfa: kapaktan ödev rehberine. Bir sayfayı açmak için kartına tıklayın.</p>
 
         <div class="site-cards five">
-            <a class="site-card" href="sayfa1.html">
+            <a class="site-card" data-tilt href="sayfa1.html">
                 <h3>01 · Kapak</h3>
                 <p>Sayının başlıkları ve kısa konu özeti.</p>
             </a>
-            <a class="site-card" href="sayfa2.html">
+            <a class="site-card" data-tilt href="sayfa2.html">
                 <h3>02 · Editörden</h3>
                 <p>Sayının amacı, sözlük ve içindekiler.</p>
             </a>
-            <a class="site-card" href="sayfa3.html">
+            <a class="site-card" data-tilt href="sayfa3.html">
                 <h3>03 · Atomdan moleküle</h3>
                 <p>Atom yapısı, bileşik ve molekül kavramları.</p>
             </a>
-            <a class="site-card coral" href="sayfa4.html">
+            <a class="site-card coral" data-tilt href="sayfa4.html">
                 <h3>04 · Kovalent bağ</h3>
                 <p>Elektron paylaşımı, Lewis yapıları ve bağ sayısı.</p>
             </a>
-            <a class="site-card coral" href="sayfa5.html">
+            <a class="site-card coral" data-tilt href="sayfa5.html">
                 <h3>05 · Moleküllerin şekli</h3>
                 <p>Dörtyüzlü, açısal ve doğrusal moleküller.</p>
             </a>
-            <a class="site-card mint" href="sayfa6.html">
+            <a class="site-card mint" data-tilt href="sayfa6.html">
                 <h3>06 · Su: kutuplu molekül</h3>
                 <p>Kısmi yükler, polarlık ve çözme gücü.</p>
             </a>
-            <a class="site-card mint" href="sayfa7.html">
+            <a class="site-card mint" data-tilt href="sayfa7.html">
                 <h3>07 · Metanın yanması</h3>
                 <p>Bağların kırılması, kurulması ve enerji hesabı.</p>
             </a>
-            <a class="site-card sun" href="sayfa8.html">
+            <a class="site-card sun" data-tilt href="sayfa8.html">
                 <h3>08 · Kütle korunumu</h3>
                 <p>Kütle hesabı ve denklem dengeleme adımları.</p>
             </a>
-            <a class="site-card sun" href="sayfa9.html">
+            <a class="site-card sun" data-tilt href="sayfa9.html">
                 <h3>09 · Günlük tepkimeler</h3>
                 <p>Sirke–karbonat, fotosentez, solunum ve paslanma.</p>
             </a>
-            <a class="site-card" href="sayfa10.html">
+            <a class="site-card" data-tilt href="sayfa10.html">
                 <h3>10 · Ödev rehberi</h3>
                 <p>1. performans ödevi için adımlar, kontrol listesi ve kaynakça.</p>
             </a>
@@ -72,5 +74,6 @@
     <footer class="site-footer">
         <p>MOLEKÜL · 10. Sınıf Kimya · Eğitim amaçlı hazırlanmıştır.</p>
     </footer>
+    <script src="js/tilt.js" defer></script>
 </body>
 </html>
