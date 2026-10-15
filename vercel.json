@@ -3,6 +3,13 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/kimya",
+      "destination": "/kimya/",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
