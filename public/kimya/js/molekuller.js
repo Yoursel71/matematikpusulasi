@@ -121,8 +121,8 @@ export const ORDER = ['h2o', 'ch4', 'co2', 'nh3', 'o2', 'n2', 'h2'];
 
 // ---------- Ortak geometri ve malzemeler ----------
 const UP = new THREE.Vector3(0, 1, 0);
-export const sphereGeometry = new THREE.SphereGeometry(1, 32, 24);
-const cylinderGeometry = new THREE.CylinderGeometry(1, 1, 1, 20, 1);
+export const sphereGeometry = new THREE.SphereGeometry(1, 24, 18);
+const cylinderGeometry = new THREE.CylinderGeometry(1, 1, 1, 12, 1);
 
 const atomMaterials = {};
 export function atomMaterial(symbol) {
@@ -257,6 +257,9 @@ export function buildMolecule(data, { mode = 'ball', labels = false, lonePairs =
     const radiusOf = (symbol) => (mode === 'space' ? ELEMENTS[symbol].vdw * SPACE_SCALE : ELEMENTS[symbol].ball);
     let extent = 0;
     group.userData.labels = [];
+    group.userData.atoms = [];
+    group.userData.bonds = [];
+    group.userData.lobes = [];
 
     data.atoms.forEach(([symbol], i) => {
         const r = radiusOf(symbol);
@@ -264,6 +267,7 @@ export function buildMolecule(data, { mode = 'ball', labels = false, lonePairs =
         mesh.scale.setScalar(r);
         mesh.position.copy(points[i]);
         group.add(mesh);
+        group.userData.atoms.push({ mesh, base: points[i].clone(), symbol });
         if (labels) {
             const label = createLabel(symbol, mode === 'space' ? 0.55 : 0.42, false);
             label.position.copy(points[i]);
@@ -278,6 +282,7 @@ export function buildMolecule(data, { mode = 'ball', labels = false, lonePairs =
             const bond = createBond(order);
             updateBond(bond, points[i], points[j]);
             group.add(bond);
+            group.userData.bonds.push({ bond, i, j });
         });
     }
 
@@ -289,6 +294,7 @@ export function buildMolecule(data, { mode = 'ball', labels = false, lonePairs =
             lobe.quaternion.setFromUnitVectors(UP, dir);
             lobe.position.copy(points[i]).addScaledVector(dir, radiusOf(data.atoms[i][0]) + 0.28);
             group.add(lobe);
+            group.userData.lobes.push({ mesh: lobe, atom: i, offset: lobe.position.clone().sub(points[i]) });
             extent = Math.max(extent, lobe.position.length() + 0.36);
         });
     }
@@ -297,10 +303,22 @@ export function buildMolecule(data, { mode = 'ball', labels = false, lonePairs =
     return group;
 }
 
+// Gösterim için atom aralığı ve küçük bağ titreşimleri; gerçek bir dinamik hesap değildir.
+export function deformMolecule(group, separation = 0, time = 0, vibrate = false) {
+    const atoms = group.userData.atoms;
+    atoms.forEach(({ mesh, base }, i) => {
+        const vibration = vibrate ? Math.sin(time * 8 + i * 1.4) * 0.045 : 0;
+        mesh.position.copy(base).multiplyScalar(1 + separation * 1.2 + vibration);
+    });
+    group.userData.bonds.forEach(({ bond, i, j }) => updateBond(bond, atoms[i].mesh.position, atoms[j].mesh.position));
+    group.userData.labels.forEach(({ base }, i) => base.copy(atoms[i].mesh.position));
+    group.userData.lobes.forEach(({ mesh, atom, offset }) => mesh.position.copy(atoms[atom].mesh.position).add(offset));
+}
+
 // ---------- Sahne, kamera, etkileşim ----------
 export function createViewer(host, { fov = 40, onResize } = {}) {
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.matchMedia('(pointer: coarse)').matches ? 1.5 : 2));
     host.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
@@ -338,30 +356,38 @@ export function fitDistance(camera, radius, margin = 1.3) {
 }
 
 // Sürükleyerek (fare / dokunma) ve ok tuşlarıyla döndürme.
-export function attachDragRotate(el, target) {
+export function attachDragRotate(el, target, { onZoom } = {}) {
     const state = { dragging: false };
-    let lastX = 0;
-    let lastY = 0;
-    const clampX = (x) => THREE.MathUtils.clamp(x, -1.3, 1.3);
-
+    const pointers = new Map();
+    const clampX = (x) => THREE.MathUtils.clamp(x, -1.45, 1.45);
+    const distance = () => {
+        const [a, b] = [...pointers.values()];
+        return b ? Math.hypot(a.x - b.x, a.y - b.y) : 0;
+    };
     el.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
         state.dragging = true;
-        lastX = e.clientX;
-        lastY = e.clientY;
-        try { el.setPointerCapture(e.pointerId); } catch (err) { /* bazı tarayıcılar desteklemez */ }
+        try { el.setPointerCapture(e.pointerId); } catch { /* Pointer capture is optional. */ }
     });
     el.addEventListener('pointermove', (e) => {
-        if (!state.dragging) return;
-        target.rotation.y += (e.clientX - lastX) * 0.01;
-        target.rotation.x = clampX(target.rotation.x + (e.clientY - lastY) * 0.01);
-        lastX = e.clientX;
-        lastY = e.clientY;
+        const previous = pointers.get(e.pointerId);
+        if (!previous) return;
+        const oldDistance = distance();
+        pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        if (pointers.size === 2 && onZoom) {
+            const newDistance = distance();
+            if (oldDistance > 0 && newDistance > 0) onZoom(oldDistance / newDistance);
+            return;
+        }
+        target.rotation.y += (e.clientX - previous.x) * 0.009;
+        // Inline touch scenes preserve vertical page scrolling. Expanded scenes allow free rotation.
+        if (e.pointerType !== 'touch' || el.closest('.is-expanded')) {
+            target.rotation.x = clampX(target.rotation.x + (e.clientY - previous.y) * 0.009);
+        }
     });
-    const stop = () => { state.dragging = false; };
-    el.addEventListener('pointerup', stop);
-    el.addEventListener('pointercancel', stop);
-    el.addEventListener('lostpointercapture', stop);
-
+    const stop = (e) => { pointers.delete(e.pointerId); state.dragging = pointers.size > 0; };
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach((name) => el.addEventListener(name, stop));
     el.addEventListener('keydown', (e) => {
         const step = 0.15;
         if (e.key === 'ArrowLeft') target.rotation.y -= step;
@@ -379,12 +405,18 @@ export function runWhenVisible(el, frame) {
     let visible = false;
     let raf = 0;
     let last = 0;
+    let elapsed = 0;
+    const interval = window.matchMedia('(pointer: coarse)').matches ? 1000 / 30 : 0;
     const tick = (now) => {
         raf = 0;
-        const dt = Math.min((now - last) / 1000, 0.05);
-        last = now;
-        frame(dt, now / 1000);
-        if (visible && !document.hidden) raf = requestAnimationFrame(tick);
+        if (!visible || document.hidden) return;
+        if (now - last >= interval) {
+            const dt = Math.min((now - last) / 1000, 0.05);
+            elapsed += dt;
+            last = now;
+            frame(dt, elapsed);
+        }
+        raf = requestAnimationFrame(tick);
     };
     const start = () => {
         if (raf || !visible || document.hidden) return;
@@ -395,10 +427,7 @@ export function runWhenVisible(el, frame) {
         new IntersectionObserver((entries) => {
             visible = entries[0].isIntersecting;
             start();
-        }, { rootMargin: '100px' }).observe(el);
-    } else {
-        visible = true;
-        start();
-    }
+        }, { rootMargin: '40px' }).observe(el);
+    } else { visible = true; start(); }
     document.addEventListener('visibilitychange', start);
 }

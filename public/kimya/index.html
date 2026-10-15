@@ -2,21 +2,27 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>MOLEKÜL — 10. Sınıf Kimya</title>
     <meta name="description" content="Moleküller ve kimyasal tepkimeler için 3D molekül laboratuvarı, tepkime animasyonu, kısa dergi ve 1. performans ödevi rehberi.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+    <meta name="author" content="Bahadır Değirmenci ve Arslan Fazıl Özbayrak">
+    <meta name="theme-color" content="#0b2433">
     <link rel="stylesheet" href="kimya.css">
+    <link rel="stylesheet" href="site.css">
 </head>
-<body>
+<body class="web-site">
+    <a class="skip-link" href="#main-content">İçeriğe geç</a>
     <header class="site-header">
-        <a class="brand" href="index.html">MOLE<span>KÜL</span></a>
-        <nav class="site-nav">
+        <a class="brand" href="index.html" aria-label="Molekül ana sayfa">MOLE<span>KÜL</span><small>Kimyayı keşfet</small></a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span class="sr-only">Menüyü aç</span></button>
+        <nav class="site-nav" id="site-nav" aria-label="Ana gezinme">
             <a href="#molekul">Molekül nedir?</a>
             <a href="#lab">3D Lab</a>
+            <a href="#atom">Atom atölyesi</a>
             <a href="#tepkime">Tepkime</a>
             <a href="#odev">Ödev</a>
             <a href="#quiz">Mini quiz</a>
@@ -24,68 +30,57 @@
         </nav>
     </header>
 
-    <section class="hero">
+    <main id="main-content">
+    <section class="hero" id="kesfet" aria-labelledby="hero-title">
         <img src="img/kapak.svg" alt="">
         <div class="hero-3d" id="hero-3d" aria-hidden="true"></div>
         <div class="hero-inner">
-            <p class="kicker">10. Sınıf Kimya · Sayı 01 · Ekim 2026</p>
-            <h1>MOLEKÜL</h1>
-            <p class="lead">Atomlar bir araya gelince ne olur? Molekülleri 3D olarak çevirin, bir tepkimeyi adım adım izleyin, sonra dergiyle konuyu pekiştirin.</p>
+            <p class="kicker"><span class="live-dot"></span> 10. Sınıf · İnteraktif kimya</p>
+            <h1 id="hero-title">Kimyayı<br><em>elinde çevir.</em></h1>
+            <p class="lead">Bir moleküle dokun. Atomların etrafında gezin. Görünmeyen dünyayı üç boyutta keşfet.</p>
             <div class="btn-row">
-                <a class="btn primary" href="#lab">3D laboratuvara gir</a>
-                <a class="btn ghost" href="dergi.html">Dergiyi oku</a>
-                <a class="btn ghost" href="molekul-dergisi.pdf" download>PDF indir</a>
-                <a class="btn ghost" href="sayfa10.html">Performans ödevi</a>
+                <a class="btn primary" href="#lab">Keşfetmeye başla <span aria-hidden="true">↗</span></a>
+                <a class="hero-read" href="dergi.html">Dergiyi oku <span aria-hidden="true">→</span></a>
             </div>
+            <div class="hero-facts"><span><b>7</b> molekül</span><span><b>3</b> boyutlu keşif</span><span><b>10</b> dergi sayfası</span></div>
         </div>
-    </section>
-
-    <section class="block" id="molekul">
-        <h2 class="section-title">Molekül nedir?</h2>
-        <p class="lead">Atomlar kimyasal bağlarla birleşince molekül oluşur. Dört temel kavram, dergideki her konunun temelini oluşturur.</p>
-        <div class="site-cards">
-            <div class="site-card" data-tilt>
-                <h3>Atom</h3>
-                <p>Bir elementin en küçük birimi. Çekirdek (proton ve nötron) ile etrafındaki elektronlardan oluşur.</p>
-            </div>
-            <div class="site-card coral" data-tilt>
-                <h3>Kovalent bağ</h3>
-                <p>Atomların elektron çiftlerini ortaklaşa kullanmasıyla oluşur. Örnek: H–H, C–H, O=O.</p>
-            </div>
-            <div class="site-card mint" data-tilt>
-                <h3>Molekül</h3>
-                <p>En az iki atomun bağlanmasıyla oluşan tanecik. Örnek: su (H<sub>2</sub>O), metan (CH<sub>4</sub>), karbondioksit (CO<sub>2</sub>).</p>
-            </div>
-            <div class="site-card sun" data-tilt>
-                <h3>Tepkime</h3>
-                <p>Bağların kırılıp yeni bağların kurulmasıyla gerçekleşen değişim. Kütle her zaman korunur.</p>
-            </div>
-        </div>
+        <div class="hero-scene-caption" aria-hidden="true"><span class="live-dot"></span> Atomlar hareket halinde <span>H₂O · CH₄ · NH₃</span></div>
+        <a class="hero-scroll" href="#lab" aria-label="3D laboratuvara kaydır">↓</a>
     </section>
 
     <section class="block alt" id="lab">
-        <p class="kicker">Etkileşimli</p>
+        <p class="kicker">01 / Dokun, döndür, keşfet</p>
         <h2 class="section-title">3D molekül laboratuvarı</h2>
-        <p class="lead">Bir molekül seçin ve sürükleyerek çevirin. Top-çubuk ile dolgu modelini karşılaştırın; ortaklanmamış elektron çiftlerinin şekli nasıl değiştirdiğine bakın.</p>
+        <p class="lead">Bir molekül seç, parmağınla çevir. Yakınlaş, bağları aç ve atomların nasıl bir araya geldiğini gör.</p>
 
+        <div class="mol-picker" role="group" aria-label="Molekül seçimi">
+            <button type="button" data-mol="h2o" aria-pressed="true">H<sub>2</sub>O <small>Su</small></button>
+            <button type="button" data-mol="ch4" aria-pressed="false">CH<sub>4</sub> <small>Metan</small></button>
+            <button type="button" data-mol="co2" aria-pressed="false">CO<sub>2</sub> <small>Karbondioksit</small></button>
+            <button type="button" data-mol="nh3" aria-pressed="false">NH<sub>3</sub> <small>Amonyak</small></button>
+            <button type="button" data-mol="o2" aria-pressed="false">O<sub>2</sub> <small>Oksijen</small></button>
+            <button type="button" data-mol="n2" aria-pressed="false">N<sub>2</sub> <small>Azot</small></button>
+            <button type="button" data-mol="h2" aria-pressed="false">H<sub>2</sub> <small>Hidrojen</small></button>
+        </div>
         <div class="lab">
             <div class="stage">
-                <div class="stage-canvas" id="lab-3d" tabindex="0" role="img" aria-label="Seçili molekülün döndürülebilir 3 boyutlu modeli"></div>
-                <p class="stage-hint">Sürükleyerek döndürün · ok tuşları da çalışır</p>
+                <div class="viewer-surface">
+                    <span class="stage-badge" id="lab-stage-name">Su · H₂O</span>
+                    <div class="stage-canvas" id="lab-3d" tabindex="0" role="img" aria-label="Seçili molekülün döndürülebilir 3 boyutlu modeli"></div>
+                </div>
+                <div class="viewer-toolbar">
+                    <p>Sağa sola sürükle · döndür</p>
+                    <div class="viewer-actions" role="group" aria-label="3D görünüm kontrolleri">
+                        <button type="button" data-zoom="in" aria-label="Yakınlaştır">+</button>
+                        <button type="button" data-zoom="out" aria-label="Uzaklaştır">−</button>
+                        <button type="button" data-reset-view aria-label="Görünümü sıfırla">↺</button>
+                        <button type="button" data-expand aria-label="Tam ekran aç" aria-pressed="false">⛶</button>
+                    </div>
+                </div>
                 <p class="webgl-fallback">Tarayıcınız WebGL desteklemediği için 3D model gösterilemiyor. Molekül şekilleri için dergi sayfa 5'e bakabilirsiniz.</p>
             </div>
 
             <div class="lab-panel">
-                <div class="mol-picker" role="group" aria-label="Molekül seçimi">
-                    <button type="button" data-mol="h2o" aria-pressed="true">H<sub>2</sub>O</button>
-                    <button type="button" data-mol="ch4" aria-pressed="false">CH<sub>4</sub></button>
-                    <button type="button" data-mol="co2" aria-pressed="false">CO<sub>2</sub></button>
-                    <button type="button" data-mol="nh3" aria-pressed="false">NH<sub>3</sub></button>
-                    <button type="button" data-mol="o2" aria-pressed="false">O<sub>2</sub></button>
-                    <button type="button" data-mol="n2" aria-pressed="false">N<sub>2</sub></button>
-                    <button type="button" data-mol="h2" aria-pressed="false">H<sub>2</sub></button>
-                </div>
-
                 <div class="lab-toggles">
                     <div class="seg" role="group" aria-label="Model türü">
                         <button type="button" data-mode="ball" aria-pressed="true">Top-çubuk</button>
@@ -94,8 +89,10 @@
                     <label class="switch"><input type="checkbox" id="lab-labels" checked> Atom etiketleri</label>
                     <label class="switch"><input type="checkbox" id="lab-lone" checked> Ortaklanmamış çiftler</label>
                     <label class="switch"><input type="checkbox" id="lab-spin" checked> Otomatik dönüş</label>
+                    <label class="switch"><input type="checkbox" id="lab-vibrate"> Bağ titreşimi</label>
                 </div>
 
+                <label class="separation-control" for="lab-separation"><span>Bağları keşfet <output id="lab-separation-value">Birlikte</output></span><input id="lab-separation" type="range" min="0" max="100" value="0"><small>Atomları uzaklaştır; bağları ve yerleşimi incele. Bu bir gösterim modelidir.</small></label>
                 <div class="mol-info" aria-live="polite">
                     <h3 id="mol-name">Su</h3>
                     <p class="mol-formula" id="mol-formula">H<sub>2</sub>O</p>
@@ -120,33 +117,84 @@
         </div>
     </section>
 
+    <section class="block atom-section" id="atom" aria-labelledby="atom-title">
+        <p class="kicker">02 / Molekülün içine bir yolculuk</p>
+        <h2 class="section-title" id="atom-title">Bir atomun<br>etrafında gezin.</h2>
+        <p class="lead">Çekirdeğe yaklaş, elektron katmanlarını incele. Bir elemente dokun; model ve tanecik sayıları birlikte değişsin.</p>
+        <div class="atom-picker" role="group" aria-label="Element seçimi">
+            <button type="button" data-element="H" aria-pressed="false"><small>01</small><b>H</b><span>Hidrojen</span></button>
+            <button type="button" data-element="C" aria-pressed="false"><small>06</small><b>C</b><span>Karbon</span></button>
+            <button type="button" data-element="N" aria-pressed="false"><small>07</small><b>N</b><span>Azot</span></button>
+            <button type="button" data-element="O" aria-pressed="true"><small>08</small><b>O</b><span>Oksijen</span></button>
+        </div>
+        <div class="lab atom-lab">
+            <div class="stage dark-stage">
+                <div class="viewer-surface">
+                    <span class="stage-badge" id="atom-stage-name">Oksijen · O</span>
+                    <div class="stage-canvas" id="atom-3d" tabindex="0" role="img" aria-label="Oksijen atomunun şematik üç boyutlu modeli"></div>
+                </div>
+                <div class="viewer-toolbar">
+                    <p>Sürükle · atomu her açıdan gör</p>
+                    <div class="viewer-actions" role="group" aria-label="3D görünüm kontrolleri">
+                        <button type="button" data-zoom="in" aria-label="Yakınlaştır">+</button>
+                        <button type="button" data-zoom="out" aria-label="Uzaklaştır">−</button>
+                        <button type="button" data-reset-view aria-label="Görünümü sıfırla">↺</button>
+                        <button type="button" data-expand aria-label="Tam ekran aç" aria-pressed="false">⛶</button>
+                    </div>
+                </div>
+                <p class="webgl-fallback">3D görünüm açılamadı. Elementlerin tanecik sayılarını ve elektron dağılımlarını aşağıda inceleyebilirsin.</p>
+            </div>
+            <div class="lab-panel atom-panel">
+                <div class="atom-heading"><p class="kicker">Yakından tanı</p><h3 id="atom-name">Oksijen</h3><span id="atom-isotope">Oksijen-16 · nötr atom</span></div>
+                <div class="particle-stats" aria-live="polite">
+                    <div><span class="particle proton"></span><b id="atom-protons">8</b><span>Proton</span></div>
+                    <div><span class="particle neutron"></span><b id="atom-neutrons">8</b><span>Nötron</span></div>
+                    <div><span class="particle electron"></span><b id="atom-electrons">8</b><span>Elektron</span></div>
+                </div>
+                <div class="atom-detail"><span>Katmanlara göre elektron sayısı</span><strong id="atom-shells">2 · 6</strong><p id="atom-note">Oksijenin son katmanında 6 elektron bulunur. Su molekülünde iki hidrojen atomuyla bağ kurar.</p></div>
+                <button class="motion-toggle" type="button" id="atom-motion" aria-pressed="true">Elektronları duraklat</button>
+                <p class="model-note">Şematik atom modeli: boyutlar ve uzaklıklar ölçekli değildir. Elektronlar gerçekte sabit dairesel yörüngelerde dolaşmaz.</p>
+            </div>
+        </div>
+    </section>
+
     <section class="block" id="tepkime">
-        <p class="kicker">Performans ödevinin konusu</p>
+        <p class="kicker">03 / Bağlar değişir, atomlar kalır</p>
         <h2 class="section-title">3D tepkime: metanın yanması</h2>
         <p class="lead">CH<sub>4</sub> + 2O<sub>2</sub> → CO<sub>2</sub> + 2H<sub>2</sub>O. Bağların kırılmasını, atomların yer değiştirmesini ve yeni bağların kurulmasını izleyin. Sahnedeki atom sayısı hiç değişmez.</p>
 
         <div class="lab">
             <div class="stage">
-                <div class="stage-canvas" id="reaction-3d" tabindex="0" role="img" aria-label="Metanın yanma tepkimesinin 3 boyutlu animasyonu"></div>
-                <div class="stage-caption" id="reaction-caption">Reaktifler: 1 CH<sub>4</sub> + 2 O<sub>2</sub></div>
-                <p class="stage-hint">Sürükleyerek açıyı değiştirin</p>
+                <div class="viewer-surface">
+                    <div class="stage-caption" id="reaction-caption">Reaktifler: 1 CH<sub>4</sub> + 2 O<sub>2</sub></div>
+                    <div class="stage-canvas" id="reaction-3d" tabindex="0" role="img" aria-label="Metanın yanma tepkimesinin 3 boyutlu animasyonu"></div>
+                </div>
+                <div class="viewer-toolbar">
+                    <p>Sürükle · bakış açını değiştir</p>
+                    <div class="viewer-actions" role="group" aria-label="3D görünüm kontrolleri">
+                        <button type="button" data-zoom="in" aria-label="Yakınlaştır">+</button>
+                        <button type="button" data-zoom="out" aria-label="Uzaklaştır">−</button>
+                        <button type="button" data-reset-view aria-label="Görünümü sıfırla">↺</button>
+                        <button type="button" data-expand aria-label="Tam ekran aç" aria-pressed="false">⛶</button>
+                    </div>
+                </div>
+                <div class="reaction-controls">
+                    <div class="playback-row"><button type="button" class="primary" id="reaction-play">Tepkimeyi oynat</button><button type="button" id="reaction-reset" aria-label="Tepkimeyi başa sar">↺</button><label class="speed-control"><span class="sr-only">Oynatma hızı</span><select id="reaction-speed"><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="1.5">1,5×</option></select></label></div>
+                    <label class="reaction-timeline" for="reaction-progress"><span>Tepkimeyi adım adım incele <output id="reaction-percent">0%</output></span><input type="range" id="reaction-progress" min="0" max="1000" value="0" aria-label="Tepkimenin ilerlemesi"></label>
+                </div>
                 <p class="webgl-fallback">Tarayıcınız WebGL desteklemediği için animasyon gösterilemiyor. Aynı tepkime dergi sayfa 7'de adım adım anlatılıyor.</p>
             </div>
 
             <div class="lab-panel">
                 <ol class="reaction-steps">
-                    <li class="active">Reaktifler hazır: 1 CH<sub>4</sub> ve 2 O<sub>2</sub></li>
-                    <li>Bağlar kırılır: 4 C–H ve 2 O=O (enerji gerekir)</li>
-                    <li>Atomlar yeniden düzenlenir</li>
-                    <li>Yeni bağlar kurulur: 2 C=O ve 4 O–H (enerji açığa çıkar)</li>
-                    <li>Ürünler: 1 CO<sub>2</sub> ve 2 H<sub>2</sub>O</li>
+                    <li class="active"><button type="button" data-reaction-step="0" aria-current="step">Reaktifler hazır: 1 CH<sub>4</sub> ve 2 O<sub>2</sub></button></li>
+                    <li><button type="button" data-reaction-step="1">Bağlar kırılır: 4 C–H ve 2 O=O (enerji gerekir)</button></li>
+                    <li><button type="button" data-reaction-step="2">Atomlar yeniden düzenlenir</button></li>
+                    <li><button type="button" data-reaction-step="3">Yeni bağlar kurulur: 2 C=O ve 4 O–H (enerji açığa çıkar)</button></li>
+                    <li><button type="button" data-reaction-step="4">Ürünler: 1 CO<sub>2</sub> ve 2 H<sub>2</sub>O</button></li>
                 </ol>
 
-                <div class="reaction-controls">
-                    <button type="button" class="primary" id="reaction-play">Oynat</button>
-                    <button type="button" id="reaction-reset">Başa sar</button>
-                    <input type="range" id="reaction-progress" min="0" max="1000" value="0" aria-label="Tepkimenin ilerlemesi">
-                </div>
+
 
                 <table class="atom-count">
                     <thead>
@@ -159,6 +207,29 @@
                     </tbody>
                 </table>
                 <p class="reaction-note">Atomlar yok olmaz, yalnızca yeniden düzenlenir; bu yüzden kütle korunur. Net enerji yaklaşık −802 kJ (ekzotermik). Hesap için dergi sayfa 7 ve 8'e bakın.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="block" id="molekul">
+        <h2 class="section-title">Molekül nedir?</h2>
+        <p class="lead">Atomlar kimyasal bağlarla birleşince molekül oluşur. Dört temel kavram, dergideki her konunun temelini oluşturur.</p>
+        <div class="site-cards">
+            <div class="site-card" data-tilt>
+                <h3>Atom</h3>
+                <p>Bir elementin en küçük birimi. Çekirdek (proton ve nötron) ile etrafındaki elektronlardan oluşur.</p>
+            </div>
+            <div class="site-card coral" data-tilt>
+                <h3>Kovalent bağ</h3>
+                <p>Atomların elektron çiftlerini ortaklaşa kullanmasıyla oluşur. Örnek: H–H, C–H, O=O.</p>
+            </div>
+            <div class="site-card mint" data-tilt>
+                <h3>Molekül</h3>
+                <p>En az iki atomun bağlanmasıyla oluşan tanecik. Örnek: su (H<sub>2</sub>O), metan (CH<sub>4</sub>), karbondioksit (CO<sub>2</sub>).</p>
+            </div>
+            <div class="site-card sun" data-tilt>
+                <h3>Tepkime</h3>
+                <p>Bağların kırılıp yeni bağların kurulmasıyla gerçekleşen değişim. Kütle her zaman korunur.</p>
             </div>
         </div>
     </section>
@@ -255,8 +326,11 @@
         </form>
     </section>
 
+    </main>
     <footer class="site-footer">
-        <p>MOLEKÜL · 10. Sınıf Kimya · Eğitim amaçlı hazırlanmıştır.</p>
+        <a class="footer-brand" href="index.html">MOLEKÜL<span>Merak et. Dokun. Keşfet.</span></a>
+        <p class="credits">Bu web sitesi <strong>Bahadır Değirmenci</strong> ve <strong>Arslan Fazıl Özbayrak</strong> tarafından hazırlanmıştır.</p>
+        <p>10. Sınıf Kimya · Eğitim amaçlı hazırlanmıştır.</p>
         <p>Kaynaklar: MEB 10. Sınıf Kimya Ders Kitabı (s. 33, ikincil özetler üzerinden) ve genel kimya referansları. Ayrıntılar dergi sayfa 10'da.</p>
         <p>3D modeller <a href="vendor/three-LICENSE.txt">three.js</a> (MIT lisansı) ile çizilmiştir.</p>
     </footer>
@@ -295,6 +369,14 @@
             });
         })();
     </script>
+    <nav class="mobile-dock" aria-label="Hızlı gezinme">
+        <a href="#kesfet" data-section="kesfet" aria-current="location"><span aria-hidden="true">⌂</span>Keşfet</a>
+        <a href="#lab" data-section="lab"><span aria-hidden="true">⬡</span>3D Lab</a>
+        <a href="#atom" data-section="atom"><span aria-hidden="true">◎</span>Atom</a>
+        <a href="#tepkime" data-section="tepkime"><span aria-hidden="true">⇄</span>Tepkime</a>
+        <a href="dergi.html"><span aria-hidden="true">▤</span>Dergi</a>
+    </nav>
+    <script src="js/siteui.js" defer></script>
     <script src="js/tilt.js" defer></script>
     <script type="module" src="js/site3d.js"></script>
 </body>

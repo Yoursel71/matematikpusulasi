@@ -2,19 +2,24 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>MOLEKÜL — Dergi</title>
     <meta name="description" content="MOLEKÜL dergisinin on sayfasına buradan ulaşın.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+    <meta name="author" content="Bahadır Değirmenci ve Arslan Fazıl Özbayrak">
+    <meta name="theme-color" content="#0b2433">
     <link rel="stylesheet" href="kimya.css">
+    <link rel="stylesheet" href="site.css">
 </head>
-<body>
+<body class="web-site magazine-index">
+    <a class="skip-link" href="#main-content">İçeriğe geç</a>
     <header class="site-header">
         <a class="brand" href="index.html">MOLE<span>KÜL</span></a>
-        <nav class="site-nav">
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span class="sr-only">Menüyü aç</span></button>
+        <nav class="site-nav" id="site-nav" aria-label="Ana gezinme">
             <a href="index.html">Ana sayfa</a>
             <a href="index.html#lab">3D Lab</a>
             <a href="sayfa10.html">Ödev</a>
@@ -22,6 +27,7 @@
         </nav>
     </header>
 
+    <main id="main-content">
     <section class="block">
         <p class="kicker">Sayı 01 · Ekim 2026</p>
         <h1 class="section-title">Dergi</h1>
@@ -74,9 +80,19 @@
         </div>
     </section>
 
+    </main>
     <footer class="site-footer">
+        <p class="credits">Bu web sitesi <strong>Bahadır Değirmenci</strong> ve <strong>Arslan Fazıl Özbayrak</strong> tarafından hazırlanmıştır.</p>
         <p>MOLEKÜL · 10. Sınıf Kimya · Eğitim amaçlı hazırlanmıştır.</p>
     </footer>
+    <nav class="mobile-dock" aria-label="Hızlı gezinme">
+        <a href="index.html#kesfet" data-section="kesfet"><span aria-hidden="true">⌂</span>Keşfet</a>
+        <a href="index.html#lab" data-section="lab"><span aria-hidden="true">⬡</span>3D Lab</a>
+        <a href="index.html#atom" data-section="atom"><span aria-hidden="true">◎</span>Atom</a>
+        <a href="index.html#tepkime" data-section="tepkime"><span aria-hidden="true">⇄</span>Tepkime</a>
+        <a href="dergi.html" aria-current="page"><span aria-hidden="true">▤</span>Dergi</a>
+    </nav>
+    <script src="js/siteui.js" defer></script>
     <script src="js/tilt.js" defer></script>
 </body>
 </html>

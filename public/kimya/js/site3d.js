@@ -8,6 +8,7 @@ import {
     sphereGeometry,
     atomMaterial,
     buildMolecule,
+    deformMolecule,
     createBond,
     updateBond,
     createLabel,
@@ -20,6 +21,7 @@ import {
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = (id) => document.getElementById(id);
+const compact = window.matchMedia('(max-width: 799px)').matches;
 
 function hasWebGL() {
     try {
@@ -30,13 +32,49 @@ function hasWebGL() {
     }
 }
 
-function safely(init) {
-    try {
-        init();
-    } catch (err) {
-        console.error(err);
-        document.documentElement.classList.add('no-webgl');
-    }
+function lazyScene(id, init) {
+    const host = $(id);
+    if (!host) return;
+    const start = () => {
+        try { init(); }
+        catch (err) {
+            console.error(err);
+            host.closest('.stage')?.classList.add('viewer-unavailable');
+            if (id === 'hero-3d') host.parentElement.classList.remove('is-3d');
+        }
+    };
+    if (id === 'hero-3d' || !('IntersectionObserver' in window)) return start();
+    const observer = new IntersectionObserver((entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        start();
+    }, { rootMargin: '300px' });
+    observer.observe(host);
+}
+
+function viewerControls(host, pivot, viewer, reset) {
+    const stage = host.closest('.stage');
+    const zoom = (factor) => {
+        const length = THREE.MathUtils.clamp(viewer.camera.position.length() * factor, 2.5, 90);
+        viewer.camera.position.setLength(length);
+    };
+    stage.querySelectorAll('[data-zoom]').forEach((button) => {
+        button.addEventListener('click', () => zoom(button.dataset.zoom === 'in' ? 0.84 : 1.19));
+    });
+    stage.querySelector('[data-reset-view]')?.addEventListener('click', () => {
+        pivot.rotation.set(0.35, -0.5, 0);
+        reset();
+    });
+    host.addEventListener('wheel', (event) => {
+        if (!stage.classList.contains('is-expanded')) return;
+        event.preventDefault();
+        zoom(event.deltaY > 0 ? 1.07 : 0.93);
+    }, { passive: false });
+    host.addEventListener('keydown', (event) => {
+        if (event.key === '+' || event.key === '=') { zoom(0.84); event.preventDefault(); }
+        if (event.key === '-') { zoom(1.19); event.preventDefault(); }
+    });
+    return attachDragRotate(host, pivot, { onZoom: zoom });
 }
 
 function seeded(seed) {
@@ -59,12 +97,17 @@ function initHero() {
     camera.position.set(0, 0, 14);
 
     const random = seeded(11);
-    const keys = ['ch4', 'h2o', 'co2', 'nh3', 'o2', 'h2o', 'ch4', 'n2', 'co2', 'h2o', 'nh3', 'ch4', 'o2', 'h2o', 'co2', 'ch4'];
-    const items = keys.map((key) => {
+    const keys = compact ? ['h2o', 'ch4', 'nh3', 'co2', 'o2', 'h2o'] : ['h2o', 'ch4', 'nh3', 'co2', 'o2', 'h2o', 'ch4', 'n2', 'co2', 'h2o'];
+    const items = keys.map((key, index) => {
         const group = buildMolecule(MOLECULES[key]);
-        group.scale.setScalar(0.9 + random() * 0.8);
+        group.scale.setScalar(compact ? 0.75 + random() * 0.4 : 1.1 + random() * 0.7);
         // Moleküller çoğunlukla sağ tarafta: sol taraf başlık metnine ayrılır.
-        group.position.set(2.5 + random() * 9, -5.5 + random() * 11, -10 + random() * 10);
+        group.position.set((random() - 0.5) * (compact ? 10 : 13), (random() - 0.5) * 7, -4 + random() * 6);
+        if (index === 0) { group.position.set(0, 0, 2); group.scale.setScalar(compact ? 3.0 : 1.7); }
+        if (compact && index > 0) {
+            const positions = [[-4.2, 1.3, -2], [3.8, 2.2, -4], [4.1, -1.7, -2], [-4.3, -2, -4], [-0.3, 3, -7]];
+            group.position.fromArray(positions[index - 1]);
+        }
         group.rotation.set(random() * 6, random() * 6, 0);
         scene.add(group);
         return {
@@ -102,11 +145,38 @@ function initHero() {
 // ============================================
 // 2. 3D molekül laboratuvarı
 // ============================================
+const setText = (id, value, html = false) => {
+    const el = $(id);
+    if (!el) return;
+    if (html) el.innerHTML = value;
+    else el.textContent = value;
+};
+
+function renderMoleculeInfo(key, host) {
+    const m = MOLECULES[key];
+    setText('mol-name', m.name);
+    setText('lab-stage-name', `${m.name} · ${m.formula.replace(/<[^>]+>/g, '')}`);
+    setText('mol-formula', m.formula, true);
+    setText('mol-shape', m.shape);
+    setText('mol-angle', m.angle);
+    setText('mol-polar', m.polarity);
+    setText('mol-bonds', m.bondText);
+    setText('mol-note', m.note, true);
+    const polar = $('mol-polar');
+    if (polar) polar.dataset.kind = m.polarity === 'Polar' ? 'polar' : 'apolar';
+    const link = $('mol-page');
+    if (link) {
+        link.href = `sayfa${m.page}.html`;
+        link.textContent = `Dergide oku: sayfa ${m.page} →`;
+    }
+    host.setAttribute('aria-label', `${m.name} molekülünün döndürülebilir 3 boyutlu modeli`);
+}
+
 function initLab() {
     const host = $('lab-3d');
     if (!host) return;
 
-    const state = { key: 'h2o', mode: 'ball', labels: true, lone: true, spin: !reduceMotion };
+    const state = { key: 'h2o', mode: 'ball', labels: true, lone: true, spin: !reduceMotion, vibrate: false, separation: 0 };
     const pivot = new THREE.Group();
     pivot.rotation.set(0.35, -0.5, 0);
     let current = null;
@@ -115,7 +185,7 @@ function initLab() {
     // Küçük moleküller de aynı ölçekte görünsün diye alt sınır kullanılır.
     const fit = () => {
         if (!viewer || !current) return;
-        const radius = Math.max(current.userData.radius, 1.5);
+        const radius = Math.max(current.userData.radius, 1.5) * (1 + state.separation * 0.9);
         viewer.camera.position.set(0, 0, fitDistance(viewer.camera, radius, 1.35));
         viewer.camera.lookAt(0, 0, 0);
     };
@@ -123,31 +193,7 @@ function initLab() {
     viewer = createViewer(host, { fov: 35, onResize: fit });
     viewer.scene.add(pivot);
 
-    const setText = (id, value, html = false) => {
-        const el = $(id);
-        if (!el) return;
-        if (html) el.innerHTML = value;
-        else el.textContent = value;
-    };
-
-    function renderInfo() {
-        const m = MOLECULES[state.key];
-        setText('mol-name', m.name);
-        setText('mol-formula', m.formula, true);
-        setText('mol-shape', m.shape);
-        setText('mol-angle', m.angle);
-        setText('mol-polar', m.polarity);
-        setText('mol-bonds', m.bondText);
-        setText('mol-note', m.note, true);
-        const polar = $('mol-polar');
-        if (polar) polar.dataset.kind = m.polarity === 'Polar' ? 'polar' : 'apolar';
-        const link = $('mol-page');
-        if (link) {
-            link.href = `sayfa${m.page}.html`;
-            link.textContent = `Dergide oku: sayfa ${m.page} →`;
-        }
-        host.setAttribute('aria-label', `${m.name} molekülünün döndürülebilir 3 boyutlu modeli`);
-    }
+    const renderInfo = () => renderMoleculeInfo(state.key, host);
 
     function rebuild() {
         if (current) pivot.remove(current);
@@ -165,6 +211,7 @@ function initLab() {
         btn.addEventListener('click', () => {
             state.key = btn.dataset.mol;
             press('[data-mol]', btn);
+            btn.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest', inline: 'center' });
             rebuild();
         });
     });
@@ -184,15 +231,24 @@ function initLab() {
     bind('lab-labels', (on) => { state.labels = on; rebuild(); });
     bind('lab-lone', (on) => { state.lone = on; rebuild(); });
     bind('lab-spin', (on) => { state.spin = on; });
+    bind('lab-vibrate', (on) => { state.vibrate = on; });
+    $('lab-separation')?.addEventListener('input', (event) => {
+        state.separation = Number(event.target.value) / 100;
+        $('lab-separation-value').textContent = state.separation ? `%${Math.round(state.separation * 100)} açık` : 'Birlikte';
+        fit();
+    });
     const spinBox = $('lab-spin');
     if (spinBox) spinBox.checked = state.spin;
 
-    const drag = attachDragRotate(host, pivot);
+    const drag = viewerControls(host, pivot, viewer, fit);
     rebuild();
 
-    runWhenVisible(host, (dt) => {
+    runWhenVisible(host, (dt, time) => {
         if (state.spin && !drag.dragging) pivot.rotation.y += dt * 0.5;
-        if (current) faceLabels(current, viewer.camera);
+        if (current) {
+            deformMolecule(current, state.separation, time, state.vibrate && !reduceMotion);
+            faceLabels(current, viewer.camera);
+        }
         viewer.renderer.render(viewer.scene, viewer.camera);
     });
 }
@@ -305,6 +361,8 @@ function initReaction() {
     const playBtn = $('reaction-play');
     const resetBtn = $('reaction-reset');
     const DURATION = 9;
+    const speed = $('reaction-speed');
+    const percent = $('reaction-percent');
     let progress = 0;
     let playing = false;
     let shownStep = -1;
@@ -347,11 +405,15 @@ function initReaction() {
                 li.classList.toggle('done', k < step);
             });
             if (caption) caption.innerHTML = CAPTIONS[step];
+            document.querySelectorAll('[data-reaction-step]').forEach((button, index) => {
+                if (index === step) button.setAttribute('aria-current', 'step');
+                else button.removeAttribute('aria-current');
+            });
         }
     }
 
     const syncButton = () => {
-        if (playBtn) playBtn.textContent = playing ? 'Duraklat' : progress >= 1 ? 'Tekrar oynat' : 'Oynat';
+        if (playBtn) playBtn.textContent = playing ? 'Duraklat' : progress >= 1 ? 'Tekrar oynat' : 'Tepkimeyi oynat';
     };
     playBtn?.addEventListener('click', () => {
         if (progress >= 1) progress = 0;
@@ -370,28 +432,21 @@ function initReaction() {
         syncButton();
     });
 
-    attachDragRotate(host, pivot);
+    document.querySelectorAll('[data-reaction-step]').forEach((button) => {
+        button.addEventListener('click', () => {
+            progress = [0, 0.2, 0.5, 0.82, 1][Number(button.dataset.reactionStep)];
+            playing = false;
+            if (range) range.value = String(progress * 1000);
+            syncButton();
+        });
+    });
+    viewerControls(host, pivot, viewer, fit);
     apply(0);
     syncButton();
 
-    // Bölüm ilk kez göründüğünde animasyon kendiliğinden başlar.
-    if (!reduceMotion && 'IntersectionObserver' in window) {
-        const io = new IntersectionObserver((entries) => {
-            if (!entries[0].isIntersecting) return;
-            io.disconnect();
-            setTimeout(() => {
-                if (progress === 0 && !playing) {
-                    playing = true;
-                    syncButton();
-                }
-            }, 700);
-        }, { threshold: 0.5 });
-        io.observe(host);
-    }
-
     runWhenVisible(host, (dt) => {
         if (playing) {
-            progress = Math.min(1, progress + dt / DURATION);
+            progress = Math.min(1, progress + dt * Number(speed?.value || 1) / DURATION);
             if (progress >= 1) {
                 playing = false;
                 syncButton();
@@ -399,14 +454,124 @@ function initReaction() {
             if (range) range.value = String(Math.round(progress * 1000));
         }
         apply(progress);
+        if (percent) percent.textContent = `${Math.round(progress * 100)}%`;
+        viewer.renderer.render(viewer.scene, viewer.camera);
+    });
+}
+
+const ATOM_DATA = {
+    H: { name: 'Hidrojen', protons: 1, neutrons: 0, shells: [1], note: 'En hafif elementtir. Tek elektronunu paylaşarak H₂ gibi moleküller oluşturabilir.' },
+    C: { name: 'Karbon', protons: 6, neutrons: 6, shells: [2, 4], note: 'Son katmanında 4 elektron bulunur. Metandaki dört C–H bağı ve organik moleküllerin omurgası karbonla kurulur.' },
+    N: { name: 'Azot', protons: 7, neutrons: 7, shells: [2, 5], note: 'Son katmanında 5 elektron bulunur. Amonyakta üç hidrojenle bağ yapar; bir elektron çifti ortaklanmadan kalır.' },
+    O: { name: 'Oksijen', protons: 8, neutrons: 8, shells: [2, 6], note: 'Son katmanında 6 elektron bulunur. Su molekülünde iki hidrojen atomuyla bağ kurar.' },
+};
+let selectedAtom = 'O';
+let updateAtomModel = null;
+function updateAtomInfo(symbol) {
+    selectedAtom = symbol;
+    const data = ATOM_DATA[symbol];
+    const set = (id, text) => { if ($(id)) $(id).textContent = text; };
+    set('atom-name', data.name);
+    set('atom-stage-name', `${data.name} · ${symbol}`);
+    set('atom-isotope', `${data.name}-${data.protons + data.neutrons} · nötr atom`);
+    set('atom-protons', data.protons);
+    set('atom-neutrons', data.neutrons);
+    set('atom-electrons', data.protons);
+    set('atom-shells', data.shells.join(' · '));
+    set('atom-note', data.note);
+    $('atom-3d')?.setAttribute('aria-label', `${data.name} atomunun şematik üç boyutlu modeli`);
+    document.querySelectorAll('[data-element]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.element === symbol)));
+    updateAtomModel?.(symbol);
+}
+document.querySelectorAll('[data-element]').forEach((button) => button.addEventListener('click', () => updateAtomInfo(button.dataset.element)));
+
+function initAtom() {
+    const host = $('atom-3d');
+    const pivot = new THREE.Group();
+    pivot.rotation.set(0.35, -0.5, 0);
+    let viewer = null;
+    const fit = () => {
+        if (!viewer) return;
+        viewer.camera.position.set(0, 0, fitDistance(viewer.camera, 3.0, 1.05));
+        viewer.camera.lookAt(0, 0, 0);
+    };
+    viewer = createViewer(host, { fov: 38, onResize: fit });
+    viewer.scene.add(pivot);
+    fit();
+    const proton = new THREE.MeshStandardMaterial({ color: 0xf07854, roughness: 0.3 });
+    const neutron = new THREE.MeshStandardMaterial({ color: 0x73e4c6, roughness: 0.3 });
+    const electron = new THREE.MeshStandardMaterial({ color: 0xffd672, emissive: 0xffb52c, emissiveIntensity: 0.5, roughness: 0.25 });
+    const orbitMaterial = new THREE.LineBasicMaterial({ color: 0x73e4c6, transparent: true, opacity: 0.3 });
+    let atom = null;
+    let orbits = [];
+    let running = !reduceMotion;
+    let time = 0;
+    const motion = $('atom-motion');
+    const sync = () => {
+        motion.textContent = running ? 'Elektronları duraklat' : 'Elektronları hareket ettir';
+        motion.setAttribute('aria-pressed', String(running));
+    };
+    motion.addEventListener('click', () => { running = !running; sync(); });
+    sync();
+    updateAtomModel = (symbol) => {
+        if (atom) {
+            pivot.remove(atom);
+            atom.traverse((object) => { if (object.isLineLoop) object.geometry.dispose(); });
+        }
+        atom = new THREE.Group();
+        const data = ATOM_DATA[symbol];
+        const total = data.protons + data.neutrons;
+        for (let i = 0; i < total; i++) {
+            const particle = new THREE.Mesh(sphereGeometry, i % 2 === 0 || i >= data.neutrons * 2 ? proton : neutron);
+            particle.scale.setScalar(0.2);
+            if (total > 1) {
+                const y = 1 - i / (total - 1) * 2;
+                const radius = Math.sqrt(1 - y * y);
+                const angle = i * Math.PI * (3 - Math.sqrt(5));
+                particle.position.set(Math.cos(angle) * radius * 0.5, y * 0.5, Math.sin(angle) * radius * 0.5);
+            }
+            atom.add(particle);
+        }
+        orbits = data.shells.map((count, index) => {
+            const radius = 1.35 + index * 1.1;
+            const orbit = new THREE.Group();
+            orbit.rotation.set(0.65 + index * 0.4, index * 0.45, index * 0.2);
+            const points = Array.from({ length: 100 }, (_, i) => new THREE.Vector3(Math.cos(i / 100 * Math.PI * 2) * radius, Math.sin(i / 100 * Math.PI * 2) * radius, 0));
+            orbit.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(points), orbitMaterial));
+            const electrons = Array.from({ length: count }, () => {
+                const mesh = new THREE.Mesh(sphereGeometry, electron);
+                mesh.scale.setScalar(0.105);
+                orbit.add(mesh);
+                return mesh;
+            });
+            atom.add(orbit);
+            return { electrons, radius, speed: 0.7 - index * 0.2 };
+        });
+        pivot.add(atom);
+    };
+    updateAtomModel(selectedAtom);
+    const drag = viewerControls(host, pivot, viewer, fit);
+    runWhenVisible(host, (dt) => {
+        if (running) time += dt;
+        if (running && !drag.dragging && !reduceMotion) pivot.rotation.y += dt * 0.08;
+        orbits.forEach(({ electrons, radius, speed }) => electrons.forEach((mesh, index) => {
+            const angle = time * speed + index / electrons.length * Math.PI * 2;
+            mesh.position.set(Math.cos(angle) * radius, Math.sin(angle) * radius, 0);
+        }));
         viewer.renderer.render(viewer.scene, viewer.camera);
     });
 }
 
 if (hasWebGL()) {
-    safely(initHero);
-    safely(initLab);
-    safely(initReaction);
+    lazyScene('hero-3d', initHero);
+    lazyScene('lab-3d', initLab);
+    lazyScene('atom-3d', initAtom);
+    lazyScene('reaction-3d', initReaction);
 } else {
     document.documentElement.classList.add('no-webgl');
+    document.querySelectorAll('[data-mol]').forEach((button) => button.addEventListener('click', () => {
+        document.querySelectorAll('[data-mol]').forEach((other) => other.setAttribute('aria-pressed', String(other === button)));
+        renderMoleculeInfo(button.dataset.mol, $('lab-3d'));
+    }));
+    document.querySelectorAll('[data-reaction-step]').forEach((button) => { button.disabled = true; });
 }
